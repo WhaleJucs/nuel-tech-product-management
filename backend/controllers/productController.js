@@ -1,4 +1,5 @@
 const prisma = require('../prismaClient')
+const { validationResult } = require('express-validator')
 
 // Função para lidar com erros
 const handleError = (res, err) => {
@@ -21,11 +22,11 @@ getProducts = async (req, res) => {
 
 // Criar novo produto
 createProduct = async (req, res) => {
-  const { name, description, price, category, stock } = req.body
+  // Validação dos resultados da requisição
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
 
-  if (!name || price === undefined || !category || stock === undefined) {
-    return res.status(400).json({ error: 'Campos obrigatórios não preenchidos' })
-  }
+  const { name, description, price, category, stock } = req.body
 
   try {
     const product = await prisma.product.create({
@@ -38,7 +39,7 @@ createProduct = async (req, res) => {
       },
     })
 
-    return res.status(201).json(product);
+    return res.status(201).json(product)
   } 
   
   catch (err) {
@@ -50,6 +51,9 @@ createProduct = async (req, res) => {
 updateProduct = async (req, res) => {
   const { id } = req.params
   const { name, description, price, category, stock } = req.body
+  // Validação dos resultados da requisição
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
 
   try {
     const existing = await prisma.product.findUnique({ where: { id: Number(id) } })
