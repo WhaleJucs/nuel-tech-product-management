@@ -17,6 +17,7 @@ const createValidation = [
     body('description').optional().isString().withMessage('descrição deve ser uma string'),
 ]
 
+// Regras de validação para atualização de produto
 const updateValidation = [
     param('id').isInt().withMessage('id deve ser um inteiro'),
     body('name').optional().isString().notEmpty().withMessage('nome deve ser uma string não vazia'),
