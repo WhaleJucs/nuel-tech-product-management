@@ -53,7 +53,7 @@ const Footer = () => {
                 {/* Redes Sociais */}
                 <div className="border-t border-gray-700 pt-6">
                     <div className="flex justify-center gap-6 mb-6">
-                        {/* WhatsApp */}
+                            {/* WhatsApp */}
                             <a href="https://wa.me/+5512981863046" target="_blank" rel="noreferrer" className="hover:opacity-80 transition">
                                 <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" className="w-6 h-6" />
                             </a>

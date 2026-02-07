@@ -11,7 +11,7 @@ const NavBar = () => {
         <nav className="bg-[#1a2432] text-white shadow-xl sticky top-0 z-50">
             <div className="container mx-auto px-6 py-3 flex justify-between items-center">
                 
-                {/* Logo oficial alinhado à esquerda conforme o site */}
+                {/* Logo oficial alinhado à esquerda */}
                 <NavLink to="/" className="flex items-center transition hover:opacity-80">
                     <img 
                         src={logoNuel} 
@@ -50,7 +50,7 @@ const NavBar = () => {
                 </ul>
             </div>
         </nav>
-    );
-};
+    )
+}
 
 export default NavBar
