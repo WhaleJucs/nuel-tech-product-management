@@ -17,18 +17,20 @@ import './App.css'
 const App = () => {
   return (
     <BrowserRouter>
-      <NavBar />
-      <div className="min-h-screen">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path='/products/:id' element={<ProductDetails />} />
-          <Route path="/products/create" element={<CreateProduct />} />
-          <Route path="/products/edit/:id" element={<EditProduct />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+      <div className="flex flex-col min-h-screen">
+        <NavBar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path='/products/:id' element={<ProductDetails />} />
+            <Route path="/products/create" element={<CreateProduct />} />
+            <Route path="/products/edit/:id" element={<EditProduct />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </main>
+        <Footer />
       </div>
-      <Footer />
     </BrowserRouter>
   )
 }
