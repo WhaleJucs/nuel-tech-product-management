@@ -6,7 +6,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      {/* Hero Section */}
       <div className="bg-[#1a2432] text-white py-20">
         <div className="container mx-auto px-6 text-center">
           <h1 className="text-5xl font-bold mb-4">
@@ -32,7 +31,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Features Section */}
       <div className="container mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-center mb-12 text-[#1a2432]">
           Funcionalidades do Sistema
@@ -62,7 +60,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Recent Products Section */}
       {!loading && products && products.length > 0 && (
         <div className="container mx-auto px-6 py-16 bg-white">
           <h2 className="text-3xl font-bold text-center mb-12 text-[#1a2432]">
