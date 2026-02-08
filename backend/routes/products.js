@@ -3,6 +3,7 @@ const { body, param } = require('express-validator')
 const router = express.Router()
 const {
         getProducts,
+        getProduct,
         createProduct,
         updateProduct,
         deleteProduct,
@@ -29,6 +30,7 @@ const updateValidation = [
 
 // Rotas de produtos
 router.get('/', getProducts)
+router.get('/:id', getProduct)
 router.post('/', createValidation, createProduct)
 router.put('/:id', updateValidation, updateProduct)
 router.delete('/:id', deleteProduct)

@@ -20,6 +20,27 @@ getProducts = async (req, res) => {
   }
 }
 
+// Obter produto por ID
+getProduct = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const product = await prisma.product.findUnique({ 
+      where: { id: Number(id) } 
+    })
+    
+    if (!product) {
+      return res.status(404).json({ error: 'Produto não encontrado' })
+    }
+    
+    return res.json(product)
+  } 
+  
+  catch (err) {
+    return handleError(res, err)
+  }
+}
+
 // Criar novo produto
 createProduct = async (req, res) => {
   // Validação dos resultados da requisição
@@ -97,6 +118,7 @@ deleteProduct = async (req, res) => {
 
 module.exports = {
     getProducts,
+    getProduct,
     createProduct,
     updateProduct,
     deleteProduct,
