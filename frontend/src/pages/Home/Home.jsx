@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useFetchProducts } from '../../hooks/useFetchProducts'
+import { useAuthValue } from '../../context/AuthContext'
 
 const Home = () => {
   const { products, loading } = useFetchProducts()
+  const { user } = useAuthValue()
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
@@ -21,12 +23,14 @@ const Home = () => {
             >
               Ver Produtos
             </Link>
-            <Link 
-              to="/products/create" 
-              className="bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
-            >
-              Criar Novo Produto
-            </Link>
+            {user && user.isAdmin && (
+              <Link 
+                to="/products/create" 
+                className="bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
+              >
+                Criar Novo Produto
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -122,12 +126,14 @@ const Home = () => {
           <p className="text-gray-600 mb-6">
             Comece adicionando seu primeiro produto ao sistema
           </p>
-          <Link 
-            to="/products/create"
-            className="inline-block bg-[#4a7ba7] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300"
-          >
-            Criar Primeiro Produto
-          </Link>
+          {user && user.isAdmin && (
+            <Link 
+              to="/products/create"
+              className="inline-block bg-[#4a7ba7] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300"
+            >
+              Criar Primeiro Produto
+            </Link>
+          )}
         </div>
       )}
     </div>
