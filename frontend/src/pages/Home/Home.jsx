@@ -23,7 +23,7 @@ const Home = () => {
             </Link>
             <Link 
               to="/products/create" 
-              className="bg-[#4a7ba7] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
+              className="bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
             >
               Criar Novo Produto
             </Link>
@@ -99,7 +99,7 @@ const Home = () => {
             <div className="text-center mt-8">
               <Link 
                 to="/products"
-                className="inline-block bg-[#4a7ba7] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300"
+                className="inline-block bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300"
               >
                 Ver Todos os Produtos
               </Link>

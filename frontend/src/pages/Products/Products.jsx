@@ -16,7 +16,7 @@ const Products = () => {
         await deleteProductData(id)
         toast.success('Produto deletado com sucesso!')
         // Recarregar a página para atualizar a lista
-        window.location.reload()
+        // window.location.reload()
       } 
       
       catch (error) {
@@ -32,14 +32,14 @@ const Products = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="bg-[#1a2432] text-white py-16">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-6 text-center">
           <h1 className="text-4xl font-bold mb-4">Catálogo de Produtos</h1>
           <p className="text-gray-300 mb-6">
             Gerencie todos os produtos do seu sistema
           </p>
           <Link 
             to="/products/create"
-            className="inline-block bg-[#4a7ba7] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
+            className="inline-block bg-[#4e6279] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
           >
             + Adicionar Novo Produto
           </Link>
@@ -124,7 +124,6 @@ const Products = () => {
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-gray-600">Estoque:</span>
                         <span className={`font-semibold ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {product.stock > 0 ? '' : 'Sem estoque'}
                           {product.stock} unidades
                         </span>
                       </div>
