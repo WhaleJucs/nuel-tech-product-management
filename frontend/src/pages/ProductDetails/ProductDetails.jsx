@@ -2,12 +2,14 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useFetchProduct } from '../../hooks/useFetchProduct'
 import { useDeleteProduct } from '../../hooks/useDeleteProduct'
+import { useAuthValue } from '../../context/AuthContext'
 import { toast } from 'react-toastify'
 
 const ProductDetails = () => {
   const { id } = useParams()
   const { product, loading, error } = useFetchProduct(id)
   const { deleteProductData, loading: deleteLoading } = useDeleteProduct()
+  const { user } = useAuthValue()
   const [isDeleting, setIsDeleting] = useState(false)
   const navigate = useNavigate()
 
@@ -197,20 +199,24 @@ const ProductDetails = () => {
           {/* Botões de Ação */}
           <div className="bg-white rounded-lg shadow-xl p-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Link
-                to={`/products/edit/${product.id}`}
-                className="text-center bg-[#4a7ba7] text-white py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
-              >
-                Editar Produto
-              </Link>
+              {user && user.isAdmin && (
+                <Link
+                  to={`/products/edit/${product.id}`}
+                  className="text-center bg-[#4a7ba7] text-white py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
+                >
+                  Editar Produto
+                </Link>
+              )}
 
-              <button
-                onClick={handleDelete}
-                disabled={isDeleting || deleteLoading}
-                className="bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isDeleting || deleteLoading ? 'Deletando...' : 'Deletar Produto'}
-              </button>
+              {user && user.isAdmin && (
+                <button
+                  onClick={handleDelete}
+                  disabled={isDeleting || deleteLoading}
+                  className="bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isDeleting || deleteLoading ? 'Deletando...' : 'Deletar Produto'}
+                </button>
+              )}
 
               <Link
                 to="/products"
