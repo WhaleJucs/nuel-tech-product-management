@@ -67,13 +67,15 @@ const EditProduct = () => {
         toast.success('Produto atualizado com sucesso!')
         navigate('/products')
       }
-    } catch (err) {
+    } 
+    
+    catch (err) {
       // Erro já é tratado pelo hook
       console.error(err)
     }
   }
 
-  // Loading state
+  // Estado de carregamento
   if (loadingProduct) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
@@ -85,7 +87,7 @@ const EditProduct = () => {
     )
   }
 
-  // Error state
+  // Estado de erro ao carregar produto
   if (errorProduct) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
@@ -109,7 +111,7 @@ const EditProduct = () => {
     )
   }
 
-  // Not found state
+  // Estado de produto não encontrado
   if (!product) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
