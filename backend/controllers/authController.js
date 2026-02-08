@@ -3,15 +3,21 @@ const jwt = require('jsonwebtoken')
 const prisma = require('../prismaClient')
 const { validationResult } = require('express-validator')
 
+/**
+ * Controller de Autenticação
+ * Gerencia registro de novos usuários e login
+ * Utiliza bcrypt para hash de senhas e JWT para tokens de autenticação
+ */
+
 const JWT_SECRET = process.env.JWT_SECRET || 'secret'
 
-// Função para lidar com erros
+// Função auxiliar para lidar com erros de servidor
 const handleError = (res, err) => {
   console.error(err)
   return res.status(500).json({ error: 'Erro interno do servidor' })
 }
 
-// Registrar novo usuário
+// Cria um usuário comum
 register = async (req, res) => {
   const { name, email, password, confirmPassword } = req.body
 
@@ -20,12 +26,12 @@ register = async (req, res) => {
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
 
   try {
-    // Verificar se as senhas coincidem
+    // Verifica se as senhas coincidem
     if (password !== confirmPassword) {
       return res.status(400).json({ error: 'As senhas não coincidem' })
     }
 
-    // Verificar se o usuário já existe
+    // Verifica se o usuário já existe
     const existingUser = await prisma.user.findUnique({
       where: { email }
     })
@@ -37,7 +43,7 @@ register = async (req, res) => {
     // Hash da senha
     const hashedPassword = bcrypt.hashSync(password, 8)
 
-    // Criar novo usuário
+    // Cria novo usuário
     const newUser = await prisma.user.create({
       data: {
         name,
@@ -53,7 +59,7 @@ register = async (req, res) => {
       }
     })
 
-    // Gerar token JWT
+    // Gera token JWT
     const token = jwt.sign(
       { id: newUser.id, isAdmin: newUser.isAdmin },
       JWT_SECRET,
@@ -82,7 +88,7 @@ login = async (req, res) => {
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
 
   try {
-    // Procurar usuário
+    // Procura usuário
     const user = await prisma.user.findUnique({
       where: { email }
     })
@@ -91,14 +97,14 @@ login = async (req, res) => {
       return res.status(404).json({ error: 'Usuário não encontrado' })
     }
 
-    // Verificar senha
+    // Verifica senha
     const passwordIsValid = bcrypt.compareSync(password, user.password)
 
     if (!passwordIsValid) {
       return res.status(401).json({ error: 'Senha incorreta' })
     }
 
-    // Gerar token JWT
+    // Gera token JWT válido por 24 horas (mesmo processo do registro)
     const token = jwt.sign(
       { id: user.id, isAdmin: user.isAdmin },
       JWT_SECRET,
@@ -123,6 +129,7 @@ login = async (req, res) => {
   }
 }
 
+// Exporta funções do controller
 module.exports = {
   register,
   login

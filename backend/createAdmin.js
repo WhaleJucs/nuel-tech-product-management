@@ -2,12 +2,18 @@ require('dotenv').config()
 const bcrypt = require('bcryptjs')
 const prisma = require('./prismaClient')
 
+/**
+ * Script para criar usuário administrador
+ * Execute com: node createAdmin.js
+ * Credenciais padrão: admin@nueltech.com / admin123
+ */
+
 async function createAdmin() {
   try {
     const email = 'admin@nueltech.com'
     const password = 'admin123'
     
-    // Verificar se já existe
+    // Verifica se já existe
     const existingUser = await prisma.user.findUnique({
       where: { email }
     })
@@ -18,7 +24,7 @@ async function createAdmin() {
       return
     }
 
-    // Criar admin
+    // Cria admin
     const hashedPassword = bcrypt.hashSync(password, 8)
     
     const admin = await prisma.user.create({

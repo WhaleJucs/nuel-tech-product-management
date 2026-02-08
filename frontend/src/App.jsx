@@ -2,6 +2,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+/**
+ * Componente Principal da Aplicação
+ * Configura rotas, autenticação e layout global
+ * Inclui rotas públicas e protegidas
+ */
+
 // Context
 import { AuthProvider, useAuthValue } from './context/AuthContext'
 
@@ -28,12 +34,18 @@ const App = () => {
           <NavBar />
           <main className="flex-grow">
             <Routes>
+
+              {/* Rotas Públicas */}
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path='/products/:id' element={<ProductDetails />} />
               <Route path="/auth" element={<AuthRoute />} />
+              
+              {/* Rotas Protegidas (requerem admin) */}
               <Route path="/products/create" element={<ProtectedRoute><CreateProduct /></ProtectedRoute>} />
               <Route path="/products/edit/:id" element={<ProtectedRoute><EditProduct /></ProtectedRoute>} />
+              
+              {/* Rota padrão - redireciona para home */}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </main>
@@ -61,6 +73,7 @@ const ProtectedRoute = ({ children }) => {
   const { user } = useAuthValue()
   
   if (!user) {
+    
     // Não está logado - redireciona para login
     return <Navigate to="/auth" />
   }

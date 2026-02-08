@@ -10,6 +10,11 @@ const {
         deleteProduct,
 } = require('../controllers/productController')
 
+// Regras de validação para parâmetro ID
+const idValidation = [
+    param('id').isInt({ min: 1 }).withMessage('ID deve ser um número inteiro positivo')
+]
+
 // Regras de validação para criação de produto
 const createValidation = [
     body('name').isString().notEmpty().withMessage('nome é obrigatório'),
@@ -44,6 +49,6 @@ router.post('/', adminMiddleware, createValidation, createProduct)
 router.put('/:id', adminMiddleware, updateValidation, updateProduct)
 
 // DELETE/:id (deletar) - Requer autenticação de admin
-router.delete('/:id', adminMiddleware, deleteProduct)
+router.delete('/:id', adminMiddleware, idValidation, deleteProduct)
 
 module.exports = router

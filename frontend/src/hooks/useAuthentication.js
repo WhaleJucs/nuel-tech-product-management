@@ -1,11 +1,17 @@
 import { useState } from 'react'
 import { login as loginService, register as registerService } from '../services/api'
 
+/**
+ * Hook Personalizado para Autenticação
+ * Gerencia operações de login e registro de usuários
+ * Retorna funções, estados de loading e erros
+ * Salva token e dados do usuário no localStorage após sucesso
+ */
 export const useAuthentication = () => {
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
 
-    // Register
+    // Função para registrar novo usuário
     const createUser = async (data) => {
         setLoading(true)
         setError(null)
@@ -33,6 +39,7 @@ export const useAuthentication = () => {
             } 
             
             else if (error.response?.data?.errors) {
+                
                 // Erros de validação do express-validator
                 systemErrorMessage = error.response.data.errors
                     .map(err => err.msg)
@@ -52,7 +59,7 @@ export const useAuthentication = () => {
         }
     }
 
-    // Login
+    // Função para fazer login de usuário existente
     const login = async (data) => {
         setLoading(true)
         setError(null)
@@ -80,6 +87,7 @@ export const useAuthentication = () => {
             } 
             
             else if (error.response?.data?.errors) {
+
                 // Erros de validação do express-validator
                 systemErrorMessage = error.response.data.errors
                     .map(err => err.msg)

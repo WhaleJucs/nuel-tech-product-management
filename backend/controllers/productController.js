@@ -1,13 +1,19 @@
 const prisma = require('../prismaClient')
 const { validationResult } = require('express-validator')
 
-// Função para lidar com erros
+/**
+ * Controller de Produtos
+ * Gerencia todas as operações CRUD (Create, Read, Update, Delete) de produtos
+ * Utiliza Prisma ORM para interagir com o banco de dados MySQL
+ */
+
+// Função auxiliar para lidar com erros de servidor
 const handleError = (res, err) => {
   console.error(err)
   return res.status(500).json({ error: 'Erro interno do servidor' })
 }
 
-// Obter todos os produtos
+// Obtem todos os produtos (público)
 getProducts = async (req, res) => {
   try {
     const products = await prisma.product.findMany()
@@ -20,9 +26,13 @@ getProducts = async (req, res) => {
   }
 }
 
-// Obter produto por ID
+// Obtem produto por ID (público)
 getProduct = async (req, res) => {
   const { id } = req.params
+
+  // Validação dos resultados da requisição
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
 
   try {
     const product = await prisma.product.findUnique({ 
@@ -41,8 +51,9 @@ getProduct = async (req, res) => {
   }
 }
 
-// Criar novo produto
+// Cria novo produto (requer autenticação de admin)
 createProduct = async (req, res) => {
+
   // Validação dos resultados da requisição
   const errors = validationResult(req)
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
@@ -68,10 +79,11 @@ createProduct = async (req, res) => {
   }
 }
 
-// Atualizar produto
+// Atualiza produto existente (requer autenticação de admin)
 updateProduct = async (req, res) => {
   const { id } = req.params
   const { name, description, price, category, stock } = req.body
+
   // Validação dos resultados da requisição
   const errors = validationResult(req)
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
@@ -100,9 +112,13 @@ updateProduct = async (req, res) => {
   }
 }
 
-// Deletar produto
+// Deleta produto (requer autenticação de admin)
 deleteProduct = async (req, res) => {
   const { id } = req.params
+
+  // Validação dos resultados da requisição
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
 
   try {
     await prisma.product.delete({ where: { id: Number(id) } })
@@ -116,6 +132,7 @@ deleteProduct = async (req, res) => {
   }
 }
 
+// Exporta todas as funções do controller
 module.exports = {
     getProducts,
     getProduct,

@@ -1,19 +1,25 @@
 import axios from 'axios'
 
+/**
+ * Configuração da API
+ * Cria instância do Axios com baseURL e interceptors para autenticação JWT
+ * Todos os endpoints da API são acessados através desta instância
+ */
+
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
 })
 
-// Interceptor para adicionar token JWT automaticamente nas requisições
+// Interceptor para adicionar token JWT automaticamente em todas as requisições
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token')
         if (token) {
+            // Adicionar token no header Authorization
             config.headers.Authorization = `Bearer ${token}`
         }
         return config
     },
-
     (error) => {
         return Promise.reject(error)
     }
@@ -25,6 +31,7 @@ api.interceptors.response.use(
     
     (error) => {
         if (error.response?.status === 401) {
+
             // Token inválido ou expirado - limpar localStorage
             localStorage.removeItem('token')
             localStorage.removeItem('user')
@@ -45,7 +52,8 @@ api.interceptors.response.use(
 export const login = (credentials) => api.post('/auth/login', credentials)
 export const register = (userInfo) => api.post('/auth/register', userInfo)
 
-// Produtos (token adicionado automaticamente pelo interceptor)
+// ========== Endpoints de Produtos ==========
+// Token JWT é adicionado automaticamente pelo interceptor nas rotas protegidas
 export const getProducts = () => api.get('/products')
 export const getProduct = (id) => api.get(`/products/${id}`)
 export const createProduct = (product) => api.post('/products', product)
