@@ -1,11 +1,24 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+import { useAuthValue } from '../context/AuthContext'
+import { useAuthentication } from '../hooks/useAuthentication'
 import logoNuel from '../assets/logo-white.png'
 
 const NavBar = () => {
+    const { user } = useAuthValue()
+    const { logout } = useAuthentication()
+    const location = useLocation()
+    
+    const isAuthPage = location.pathname === '/auth'
+    
     const linkStyles = ({ isActive }) => 
         `relative pb-1 transition-all duration-300 before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-white before:transition-all before:duration-300 hover:before:w-full ${
             isActive ? 'text-white before:w-full font-bold' : 'text-white hover:text-white'
         }`
+
+    const handleLogout = () => {
+        logout()
+        window.location.href = '/'
+    }
 
     return (
         <nav className="bg-[#1a2432] text-white shadow-xl sticky top-0 z-50">
@@ -19,6 +32,14 @@ const NavBar = () => {
                         className="h-12 w-auto object-contain" 
                     />
                 </NavLink>
+
+                {/* Nome do usuário no centro (se logado) */}
+                {user && !isAuthPage && (
+                    <div className="text-white font-medium">
+                        <span className="text-gray-300 text-xl">Olá, </span>
+                        <span className="font-semibold text-xl">{user.name}</span>
+                    </div>
+                )}
 
                 {/* Links de navegação alinhados à direita */}
                 <ul className="flex gap-8 items-center text-sm font-medium uppercase tracking-wider">
@@ -39,14 +60,45 @@ const NavBar = () => {
                             Produtos
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink 
-                            to="/products/create"
-                            className={linkStyles}
-                        >
-                            Novo Produto
-                        </NavLink>
-                    </li>
+                    
+                    {/* Novo Produto - Só admin */}
+                    {user && user.isAdmin && !isAuthPage && (
+                        <li>
+                            <NavLink 
+                                to="/products/create"
+                                className={linkStyles}
+                            >
+                                Novo Produto
+                            </NavLink>
+                        </li>
+                    )}
+
+                    {/* Botões de autenticação */}
+                    {!isAuthPage && (
+                        <>
+                            {!user && (
+                                <li>
+                                    <NavLink 
+                                        to="/auth"
+                                        className={linkStyles}
+                                    >
+                                        Entrar
+                                    </NavLink>
+                                </li>
+                            )}
+
+                            {user && (
+                                <li>
+                                    <button 
+                                        onClick={handleLogout}
+                                        className="relative pb-1 transition-all duration-300 before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-white before:transition-all before:duration-300 hover:before:w-full text-white hover:text-white uppercase"
+                                    >
+                                        Sair
+                                    </button>
+                                </li>
+                            )}
+                        </>
+                    )}
                 </ul>
             </div>
         </nav>
