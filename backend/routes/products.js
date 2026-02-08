@@ -1,6 +1,7 @@
 const express = require('express')
 const { body, param } = require('express-validator')
 const router = express.Router()
+const { adminMiddleware } = require('../middlewares/auth')
 const {
         getProducts,
         getProduct,
@@ -29,10 +30,20 @@ const updateValidation = [
 ]
 
 // Rotas de produtos
+
+// GET (listar todos) - Público
 router.get('/', getProducts)
+
+// GET/:id (obter um específico) - Público
 router.get('/:id', getProduct)
-router.post('/', createValidation, createProduct)
-router.put('/:id', updateValidation, updateProduct)
-router.delete('/:id', deleteProduct)
+
+// POST (criar) - Requer autenticação de admin
+router.post('/', adminMiddleware, createValidation, createProduct)
+
+// PUT/:id (atualizar) - Requer autenticação de admin
+router.put('/:id', adminMiddleware, updateValidation, updateProduct)
+
+// DELETE/:id (deletar) - Requer autenticação de admin
+router.delete('/:id', adminMiddleware, deleteProduct)
 
 module.exports = router
