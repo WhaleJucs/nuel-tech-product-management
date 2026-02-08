@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useUpdateProduct } from '../../hooks/useUpdateProduct'
 import { useFetchProduct } from '../../hooks/useFetchProduct'
+import HeroSection from '../../components/HeroSection'
 import { toast } from 'react-toastify'
 
 const EditProduct = () => {
@@ -91,11 +92,9 @@ const EditProduct = () => {
   if (errorProduct) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-        <div className="bg-[#1a2432] text-white py-16">
-          <div className="container mx-auto px-6 text-center">
-            <h1 className="text-4xl font-bold mb-4">Erro ao Carregar Produto</h1>
-          </div>
-        </div>
+        <HeroSection 
+          title="Erro ao Carregar Produto"
+        />
         <div className="container mx-auto px-6 py-12">
           <div className="max-w-2xl mx-auto bg-red-50 border border-red-200 text-red-700 px-6 py-8 rounded-lg text-center">
             <p className="text-xl font-semibold mb-4">{errorProduct}</p>
@@ -115,11 +114,9 @@ const EditProduct = () => {
   if (!product) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-        <div className="bg-[#1a2432] text-white py-16">
-          <div className="container mx-auto px-6 text-center">
-            <h1 className="text-4xl font-bold mb-4">Produto Não Encontrado</h1>
-          </div>
-        </div>
+        <HeroSection 
+          title="Produto Não Encontrado"
+        />
         <div className="container mx-auto px-6 py-12">
           <div className="max-w-2xl mx-auto bg-yellow-50 border border-yellow-200 text-yellow-700 px-6 py-8 rounded-lg text-center">
             <p className="text-xl font-semibold mb-4">O produto solicitado não existe.</p>
@@ -137,14 +134,10 @@ const EditProduct = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="bg-[#1a2432] text-white py-16">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-4">Editar Produto</h1>
-          <p className="text-xl mb-8 text-gray-300">
-            Atualize as informações do produto: <span className="font-semibold">{product.name}</span>
-          </p>
-        </div>
-      </div>
+      <HeroSection 
+        title="Editar Produto"
+        subtitle={`Atualize as informações do produto: ${product.name}`}
+      />
 
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-xl p-8">

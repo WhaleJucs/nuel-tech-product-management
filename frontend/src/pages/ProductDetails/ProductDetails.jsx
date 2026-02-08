@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useFetchProduct } from '../../hooks/useFetchProduct'
 import { useDeleteProduct } from '../../hooks/useDeleteProduct'
 import { useAuthValue } from '../../context/AuthContext'
+import HeroSection from '../../components/HeroSection'
 import { toast } from 'react-toastify'
 
 const ProductDetails = () => {
@@ -45,11 +46,9 @@ const ProductDetails = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-        <div className="bg-[#1a2432] text-white py-16">
-          <div className="container mx-auto px-6 text-center">
-            <h1 className="text-4xl font-bold mb-4">Erro ao Carregar Produto</h1>
-          </div>
-        </div>
+        <HeroSection 
+          title="Erro ao Carregar Produto"
+        />
         <div className="container mx-auto px-6 py-12">
           <div className="max-w-2xl mx-auto bg-red-50 border border-red-200 text-red-700 px-6 py-8 rounded-lg text-center">
             <p className="text-xl font-semibold mb-4">{error}</p>
@@ -69,11 +68,9 @@ const ProductDetails = () => {
   if (!product) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-        <div className="bg-[#1a2432] text-white py-16">
-          <div className="container mx-auto px-6 text-center">
-            <h1 className="text-4xl font-bold mb-4">Produto Não Encontrado</h1>
-          </div>
-        </div>
+        <HeroSection 
+          title="Produto Não Encontrado"
+        />
         <div className="container mx-auto px-6 py-12">
           <div className="max-w-2xl mx-auto bg-yellow-50 border border-yellow-200 text-yellow-700 px-6 py-8 rounded-lg text-center">
             <p className="text-xl font-semibold mb-4">O produto solicitado não existe.</p>
@@ -91,8 +88,8 @@ const ProductDetails = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="bg-[#1a2432] text-white py-16">
-        <div className="container mx-auto px-6">
+      <HeroSection>
+        <div className="container mx-auto px-6 text-left">
           <Link
             to="/products"
             className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition duration-300 mb-6"
@@ -104,7 +101,7 @@ const ProductDetails = () => {
           </Link>
           <h1 className="text-5xl font-bold mb-4">{product.name}</h1>
         </div>
-      </div>
+      </HeroSection>
 
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto">
@@ -197,35 +194,44 @@ const ProductDetails = () => {
           </div>
 
           {/* Botões de Ação */}
-          <div className="bg-white rounded-lg shadow-xl p-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {user && user.isAdmin && (
+          {user && user.isAdmin && (
+            <div className="bg-white rounded-lg shadow-xl p-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Link
+                    to={`/products/edit/${product.id}`}
+                    className="text-center bg-[#4a7ba7] text-white py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
+                  >
+                    Editar Produto
+                  </Link>
+
+                  <button
+                    onClick={handleDelete}
+                    disabled={isDeleting || deleteLoading}
+                    className="bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isDeleting || deleteLoading ? 'Deletando...' : 'Deletar Produto'}
+                  </button>
+
                 <Link
-                  to={`/products/edit/${product.id}`}
-                  className="text-center bg-[#4a7ba7] text-white py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
+                  to="/products"
+                  className="text-center bg-gray-500 text-white py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300 shadow-lg"
                 >
-                  Editar Produto
+                  Voltar para Catálogo
                 </Link>
-              )}
-
-              {user && user.isAdmin && (
-                <button
-                  onClick={handleDelete}
-                  disabled={isDeleting || deleteLoading}
-                  className="bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isDeleting || deleteLoading ? 'Deletando...' : 'Deletar Produto'}
-                </button>
-              )}
-
+              </div>
+            </div>
+          )}
+          
+          {user && !user.isAdmin && (
+            <div className="bg-white rounded-lg shadow-xl p-8 text-center">
               <Link
                 to="/products"
-                className="text-center bg-gray-500 text-white py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300 shadow-lg"
+                className="inline-block text-center bg-gray-500 text-white px-4 py-3 rounded-lg font-semibold hover:bg-gray-600 transition duration-300 shadow-lg"
               >
                 Voltar para Catálogo
               </Link>
             </div>
-          </div>
+          )}
 
           {/* Waring se fora de estoque */}
           {product.stock === 0 && (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useInsertProduct } from '../../hooks/useInsertProduct'
+import HeroSection from '../../components/HeroSection'
 import { toast } from 'react-toastify'
 
 const CreateProducts = () => {
@@ -55,14 +56,10 @@ const CreateProducts = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="bg-[#1a2432] text-white py-16">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-4">Novo Produto</h1>
-          <p className="text-xl mb-8 text-gray-300">
-            Adicione um novo produto ao seu catálogo
-          </p>
-        </div>
-      </div>
+      <HeroSection 
+        title="Novo Produto"
+        subtitle="Adicione um novo produto ao seu catálogo"
+      />
 
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-xl p-8">

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useFetchProducts } from '../../hooks/useFetchProducts'
 import { useDeleteProduct } from '../../hooks/useDeleteProduct'
 import { useAuthValue } from '../../context/AuthContext'
+import HeroSection from '../../components/HeroSection'
 import { toast } from 'react-toastify'
 
 const Products = () => {
@@ -33,22 +34,19 @@ const Products = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="bg-[#1a2432] text-white py-16">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-4">Catálogo de Produtos</h1>
-          <p className="text-xl mb-8 text-gray-300">
-            Gerencie todos os produtos do seu sistema
-          </p>
-          {user && user.isAdmin && (
-            <Link 
-              to="/products/create"
-              className="inline-block bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
-            >
-              + Adicionar Novo Produto
-            </Link>
-          )}
-        </div>
-      </div>
+      <HeroSection 
+        title="Catálogo de Produtos"
+        subtitle="Gerencie todos os produtos do seu sistema"
+      >
+        {user && user.isAdmin && (
+          <Link 
+            to="/products/create"
+            className="inline-block bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
+          >
+            + Adicionar Novo Produto
+          </Link>
+        )}
+      </HeroSection>
 
       <div className="container mx-auto px-6 py-12">
         {loading && (

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useFetchProducts } from '../../hooks/useFetchProducts'
 import { useAuthValue } from '../../context/AuthContext'
+import HeroSection from '../../components/HeroSection'
 
 const Home = () => {
   const { products, loading } = useFetchProducts()
@@ -8,32 +9,27 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="bg-[#1a2432] text-white py-20">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-4">
-            Sistema de Gerenciamento de Produtos
-          </h1>
-          <p className="text-xl mb-8 text-gray-300">
-            Gerencie seu catálogo de produtos de forma simples e eficiente
-          </p>
-          <div className="flex gap-4 justify-center">
+      <HeroSection 
+        title="Sistema de Gerenciamento de Produtos"
+        subtitle="Gerencie seu catálogo de produtos de forma simples e eficiente"
+      >
+        <div className="flex gap-4 justify-center">
+          <Link 
+            to="/products" 
+            className="bg-white text-[#1a2432] px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 shadow-lg"
+          >
+            Ver Produtos
+          </Link>
+          {user && user.isAdmin && (
             <Link 
-              to="/products" 
-              className="bg-white text-[#1a2432] px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 shadow-lg"
+              to="/products/create" 
+              className="bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
             >
-              Ver Produtos
+              Criar Novo Produto
             </Link>
-            {user && user.isAdmin && (
-              <Link 
-                to="/products/create" 
-                className="bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
-              >
-                Criar Novo Produto
-              </Link>
-            )}
-          </div>
+          )}
         </div>
-      </div>
+      </HeroSection>
 
       <div className="container mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-center mb-12 text-[#1a2432]">
