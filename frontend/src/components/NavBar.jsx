@@ -25,6 +25,7 @@ const NavBar = () => {
             <div className="container mx-auto px-6 py-3 flex justify-between items-center">
                 
                 {/* Logo oficial alinhado à esquerda */}
+                {!user && (
                 <NavLink to="/" className="flex items-center transition hover:opacity-80">
                     <img 
                         src={logoNuel} 
@@ -32,6 +33,7 @@ const NavBar = () => {
                         className="h-12 w-auto object-contain" 
                     />
                 </NavLink>
+                )}
 
                 {/* Nome do usuário no centro (se logado) */}
                 {user && !isAuthPage && (
@@ -89,12 +91,14 @@ const NavBar = () => {
 
                             {user && (
                                 <li>
-                                    <button 
+                                    <NavLink
+                                        to="/"
                                         onClick={handleLogout}
                                         className="relative pb-1 transition-all duration-300 before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-white before:transition-all before:duration-300 hover:before:w-full text-white hover:text-white uppercase"
                                     >
                                         Sair
-                                    </button>
+                                    </NavLink>
+                                    
                                 </li>
                             )}
                         </>

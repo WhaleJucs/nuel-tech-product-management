@@ -2,11 +2,13 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useFetchProducts } from '../../hooks/useFetchProducts'
 import { useDeleteProduct } from '../../hooks/useDeleteProduct'
+import { useAuthValue } from '../../context/AuthContext'
 import { toast } from 'react-toastify'
 
 const Products = () => {
   const { products, loading, error } = useFetchProducts()
   const { deleteProductData, loading: deleteLoading } = useDeleteProduct()
+  const { user } = useAuthValue()
   const [deletingId, setDeletingId] = useState(null)
 
   const handleDelete = async (id, name) => {
@@ -37,12 +39,14 @@ const Products = () => {
           <p className="text-xl mb-8 text-gray-300">
             Gerencie todos os produtos do seu sistema
           </p>
-          <Link 
-            to="/products/create"
-            className="inline-block bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
-          >
-            + Adicionar Novo Produto
-          </Link>
+          {user && user.isAdmin && (
+            <Link 
+              to="/products/create"
+              className="inline-block bg-[#4e6279] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300 shadow-lg"
+            >
+              + Adicionar Novo Produto
+            </Link>
+          )}
         </div>
       </div>
 
@@ -68,12 +72,14 @@ const Products = () => {
             <p className="text-gray-600 mb-6">
               Comece adicionando seu primeiro produto ao catálogo
             </p>
-            <Link 
-              to="/products/create"
-              className="inline-block bg-[#4a7ba7] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300"
-            >
-              Criar Primeiro Produto
-            </Link>
+            {user && user.isAdmin && (
+              <Link 
+                to="/products/create"
+                className="inline-block bg-[#4a7ba7] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3d6a8f] transition duration-300"
+              >
+                Criar Primeiro Produto
+              </Link>
+            )}
           </div>
         )}
 
@@ -137,21 +143,25 @@ const Products = () => {
                       >
                         Ver Detalhes
                       </Link>
-                      <Link 
-                        to={`/products/edit/${product.id}`}
-                        className="flex-1 text-center bg-[#4a7ba7] text-white py-2 rounded-lg hover:bg-[#3d6a8f] transition duration-300 text-sm font-medium"
-                      >
-                        Editar
-                      </Link>
+                      {user && user.isAdmin && (
+                        <Link 
+                          to={`/products/edit/${product.id}`}
+                          className="flex-1 text-center bg-[#4a7ba7] text-white py-2 rounded-lg hover:bg-[#3d6a8f] transition duration-300 text-sm font-medium"
+                        >
+                          Editar
+                        </Link>
+                      )}
                     </div>
 
-                    <button 
-                      onClick={() => handleDelete(product.id, product.name)}
-                      disabled={deleteLoading && deletingId === product.id}
-                      className="w-full mt-2 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {deleteLoading && deletingId === product.id ? 'Deletando...' : 'Deletar Produto'}
-                    </button>
+                    {user && user.isAdmin && (
+                      <button 
+                        onClick={() => handleDelete(product.id, product.name)}
+                        disabled={deleteLoading && deletingId === product.id}
+                        className="w-full mt-2 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-300 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {deleteLoading && deletingId === product.id ? 'Deletando...' : 'Deletar Produto'}
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
