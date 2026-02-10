@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useFetchProducts } from '../../hooks/useFetchProducts'
 import { useDeleteProduct } from '../../hooks/useDeleteProduct'
 import { useAuthValue } from '../../context/AuthContext'
@@ -7,19 +7,27 @@ import HeroSection from '../../components/HeroSection'
 import { toast } from 'react-toastify'
 
 const Products = () => {
-  const { products, loading, error } = useFetchProducts()
+  const { products: fetchedProducts, loading, error } = useFetchProducts()
   const { deleteProductData, loading: deleteLoading } = useDeleteProduct()
   const { user } = useAuthValue()
   const [deletingId, setDeletingId] = useState(null)
+  const [products, setProducts] = useState([])
+
+  // Sincronizar com os produtos buscados da API
+  useEffect(() => {
+    if (fetchedProducts) {
+      setProducts(fetchedProducts)
+    }
+  }, [fetchedProducts])
 
   const handleDelete = async (id, name) => {
     if (window.confirm(`Tem certeza que deseja deletar o produto "${name}"?`)) {
       setDeletingId(id)
       try {
         await deleteProductData(id)
+        // Remover o produto da lista local sem fazer nova requisição
+        setProducts(products.filter(product => product.id !== id))
         toast.success('Produto deletado com sucesso!')
-        // Recarregar a página para atualizar a lista
-        // window.location.reload()
       } 
       
       catch (error) {
